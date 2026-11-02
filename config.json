@@ -1,28 +1,28 @@
 {
   "displayName": "Ken",
-  "startDate": "2026-11-02",
-  "problemsPerWeek": 8,
+  "problemsPerPack": 8,
+  "countOptions": [5, 8, 10, 12, 15, 20, 25],
   "level": {
     "min": 700,
     "max": 1300
   },
   "autoPromote": {
     "enabled": true,
-    "minSolved": 6,
-    "consecutiveWeeks": 2,
+    "minPercent": 75,
+    "consecutivePacks": 2,
     "step": 100,
     "maxRatingCap": 2700
   },
   "bonus": {
     "enabled": true,
-    "perWeek": 2,
+    "perPack": 2,
     "above": 300
   },
   "recycle": {
     "enabled": true,
-    "gapWeeks": 1,
-    "maxPerWeek": 3,
-    "maxBonusPerWeek": 1,
+    "gapPacks": 1,
+    "maxPerPack": 3,
+    "maxBonusPerPack": 1,
     "maxAppearances": 3
   },
   "contests": {

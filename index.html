@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Latihan Matematika Ken</title>
-  <meta name="description" content="Paket soal matematika mingguan dari arsip AoPS Wiki (AMC 8, AMC 10, AMC 12, AIME), progres, dan statistik.">
+  <meta name="description" content="Paket soal matematika dari arsip AoPS Wiki (AMC 8, AMC 10, AMC 12, AIME) dengan jumlah soal pilihan, progres, dan statistik.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -21,7 +21,7 @@
     </header>
 
     <nav class="tabs" role="tablist" aria-label="Bagian">
-      <button role="tab" id="tab-minggu" aria-selected="true" data-tab="minggu">Minggu ini</button>
+      <button role="tab" id="tab-paket" aria-selected="true" data-tab="paket">Paket soal</button>
       <button role="tab" id="tab-riwayat" aria-selected="false" data-tab="riwayat">Riwayat</button>
       <button role="tab" id="tab-statistik" aria-selected="false" data-tab="statistik">Statistik</button>
       <button role="tab" id="tab-sumber" aria-selected="false" data-tab="sumber">Sumber belajar</button>
@@ -30,25 +30,25 @@
     <p class="banner" id="banner" hidden></p>
     <div class="sync" id="sync" hidden></div>
 
-    <!-- MINGGU -->
-    <section class="panel" id="panel-minggu" role="tabpanel" aria-labelledby="tab-minggu">
+    <!-- PAKET -->
+    <section class="panel" id="panel-paket" role="tabpanel" aria-labelledby="tab-paket">
       <div class="week-head">
         <div class="week-nav">
-          <button class="icon-btn" id="prev-week" aria-label="Minggu sebelumnya">‹</button>
+          <button class="icon-btn" id="prev-pack" aria-label="Paket sebelumnya">‹</button>
           <div>
-            <h2 id="week-title">Minggu —</h2>
-            <p class="muted" id="week-dates"></p>
+            <h2 id="pack-title">Paket —</h2>
+            <p class="muted" id="pack-info"></p>
           </div>
-          <button class="icon-btn" id="next-week" aria-label="Minggu berikutnya">›</button>
+          <button class="icon-btn" id="next-pack" aria-label="Paket berikutnya">›</button>
         </div>
         <div class="week-meta">
           <div class="score">
-            <span class="score-num" id="week-score">0/8</span>
+            <span class="score-num" id="pack-score">0/0</span>
             <span class="muted">benar</span>
           </div>
-          <div class="meter" aria-hidden="true"><span id="week-meter"></span></div>
+          <div class="meter" aria-hidden="true"><span id="pack-meter"></span></div>
           <p class="bonus-score" id="bonus-score" hidden></p>
-          <p class="countdown" id="countdown"></p>
+          <p class="countdown" id="pack-progress"></p>
           <p class="working-line" id="working" hidden></p>
         </div>
       </div>
@@ -59,7 +59,8 @@
           <li>Klik <strong>Kerjakan</strong>. Naskah soal terbuka di AoPS Wiki (tanpa pembahasan), dan waktu mulai dicatat.</li>
           <li>Kerjakan di kertas. Isi jawaban di sini: pilih A–E untuk AMC/AJHSME, atau ketik bilangan 0–999 untuk AIME. Klik <strong>Simpan jawaban</strong>.</li>
           <li>Buka <strong>Kunci jawaban</strong>, lalu tandai jawabanmu <strong>Benar</strong> atau <strong>Salah</strong> dengan jujur.</li>
-          <li>Baca <strong>Pembahasan</strong> untuk soal yang salah. Soal yang belum benar akan muncul lagi beberapa minggu kemudian.</li>
+          <li>Baca <strong>Pembahasan</strong> untuk soal yang salah. Soal yang belum benar akan muncul lagi di paket berikutnya.</li>
+          <li>Setelah semua soal selesai dinilai, pilih jumlah soal lalu klik <strong>Keluarkan soal baru</strong>. Soal bonus boleh dilewati.</li>
         </ol>
       </details>
 
@@ -69,11 +70,13 @@
         <div class="bonus-head">
           <div>
             <h3>Bonus tantangan</h3>
-            <p class="muted small">Sedikit di atas level sekarang. Tidak dihitung untuk naik level.</p>
+            <p class="muted small">Sedikit di atas level sekarang. Tidak wajib, dan tidak dihitung untuk naik level.</p>
           </div>
         </div>
         <ol class="problems" id="bonus-list"></ol>
       </section>
+
+      <div class="newpack" id="newpack" hidden></div>
 
       <div class="levelup" id="levelup" hidden></div>
 
@@ -84,8 +87,8 @@
           <label>Rating maksimum <input type="number" id="lvl-max" min="400" max="2800" step="50" required></label>
           <button type="submit" class="btn-ghost">Simpan level</button>
         </form>
-        <p class="muted small">Level baru dipakai untuk paket minggu depan. Jika soal minggu ini belum ada yang dijawab, paket minggu ini juga langsung diganti.</p>
-        <p><button class="btn-ghost" id="regen">Ganti soal minggu ini</button></p>
+        <p class="muted small">Jika soal paket sekarang belum ada yang dikerjakan, soalnya langsung diganti sesuai level baru. Jika sudah, level baru dipakai mulai paket berikutnya.</p>
+        <p><button class="btn-ghost" id="regen">Batalkan paket sekarang &amp; pilih ulang jumlah soal</button></p>
         <p class="muted small" id="settings-msg"></p>
       </details>
     </section>
@@ -95,7 +98,7 @@
       <div class="table-scroll">
         <table class="history">
           <thead>
-            <tr><th>Minggu</th><th>Tanggal</th><th>Level</th><th class="num">Tepat waktu</th><th class="num">Total benar</th><th class="num">Bonus</th><th></th></tr>
+            <tr><th>Paket</th><th>Dibuat</th><th>Selesai</th><th>Level</th><th class="num">Benar</th><th class="num">Bonus</th><th></th></tr>
           </thead>
           <tbody id="history-body"></tbody>
         </table>
@@ -106,9 +109,9 @@
     <section class="panel" id="panel-statistik" role="tabpanel" aria-labelledby="tab-statistik" hidden>
       <div class="stat-tiles" id="stat-tiles"></div>
       <figure class="chart-card">
-        <figcaption>Soal benar per minggu</figcaption>
+        <figcaption>Persentase benar per paket</figcaption>
         <div id="chart" class="chart"></div>
-        <div class="legend"><span class="key on"></span>Tepat waktu <span class="key late"></span>Susulan</div>
+        <div class="legend"><span class="key on"></span>Paket selesai <span class="key late"></span>Masih berjalan</div>
       </figure>
       <div class="split">
         <figure class="chart-card">
@@ -129,7 +132,7 @@
 
     <footer class="foot muted">
       Soal, kunci jawaban &amp; pembahasan dari <a href="https://artofproblemsolving.com/wiki/" target="_blank" rel="noopener">AoPS Wiki</a>.
-      Paket baru muncul setiap Senin pukul 00.00 WIB.
+      Paket baru bisa dikeluarkan setelah semua soal paket sebelumnya selesai.
     </footer>
   </div>
 

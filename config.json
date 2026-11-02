@@ -1,0 +1,44 @@
+{
+  "displayName": "Ken",
+  "startDate": "2026-11-02",
+  "problemsPerWeek": 8,
+  "level": {
+    "min": 700,
+    "max": 1300
+  },
+  "autoPromote": {
+    "enabled": true,
+    "minSolved": 6,
+    "consecutiveWeeks": 2,
+    "step": 100,
+    "maxRatingCap": 2700
+  },
+  "bonus": {
+    "enabled": true,
+    "perWeek": 2,
+    "above": 300
+  },
+  "recycle": {
+    "enabled": true,
+    "gapWeeks": 1,
+    "maxPerWeek": 3,
+    "maxBonusPerWeek": 1,
+    "maxAppearances": 3
+  },
+  "contests": {
+    "AJHSME": true,
+    "AMC8": true,
+    "AMC10": true,
+    "AMC12": true,
+    "AIME": true
+  },
+  "lastYear": {
+    "AMC8": 2026,
+    "AMC10": 2025,
+    "AMC12": 2025,
+    "AIME": 2026
+  },
+  "firebase": {
+    "databaseURL": "https://osn-informatika-ken-default-rtdb.asia-southeast1.firebasedatabase.app"
+  }
+}

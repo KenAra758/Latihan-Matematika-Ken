@@ -142,17 +142,16 @@
     return { ...base, kind: 'started' };
   }
 
-  // count/ok/pct dihitung dari soal utama; "selesai" berarti SEMUA soal yang tampil
-  // (termasuk bonus dari paket lama, jika ada) sudah dinilai atau dilewati.
+  // Hanya soal utama yang dihitung. Soal bonus tidak memengaruhi skor, naik level,
+  // maupun aktifnya tombol "Keluarkan soal baru".
   function packScore(pk) {
-    const all = [...pk.problems, ...(pk.bonus || [])];
-    const sc = { count: pk.problems.length, total: all.length, ok: 0, done: 0, finishedAt: 0 };
-    pk.problems.forEach((p) => { if (statusOf(p.id, pk).kind === 'ok') sc.ok++; });
-    all.forEach((p) => {
+    const sc = { count: pk.problems.length, ok: 0, done: 0, finishedAt: 0 };
+    pk.problems.forEach((p) => {
       const s = statusOf(p.id, pk);
+      if (s.kind === 'ok') sc.ok++;
       if (DONE.includes(s.kind)) { sc.done++; sc.finishedAt = Math.max(sc.finishedAt, s.att.vt || 0); }
     });
-    sc.complete = sc.total > 0 && sc.done === sc.total;
+    sc.complete = sc.count > 0 && sc.done === sc.count;
     sc.pct = sc.count ? Math.round((sc.ok / sc.count) * 100) : 0;
     return sc;
   }
@@ -371,13 +370,17 @@
     let status;
     let work = '';
     const detail = s.att?.a != null ? `Jawab ${esc(s.att.a)}${s.took ? ` · ${minutes(s.took)} mnt` : ''}` : '';
-    const after = `<small><a href="${p.solutionUrl}" target="_blank" rel="noopener">Pembahasan ↗</a> · <button class="link-btn" data-act="unjudge">ubah</button></small>`;
-    if (s.kind === 'ok') status = `<span class="status ok">Benar</span><small>${detail}</small>${after}`;
-    else if (s.kind === 'wrong') status = `<span class="status tried">Salah</span><small>${detail}</small>${after}`;
-    else if (s.kind === 'skip') status = `<span class="status todo">Dilewati</span>${after}`;
-    else if (s.kind === 'answered') { status = `<span class="status check">Cek kunci</span>`; work = judgeForm(p, s); }
-    else if (s.kind === 'started') { status = `<span class="status working">Dikerjakan</span>`; work = answerForm(p, pk, s); }
-    else status = `<a class="mini-btn primary" href="${p.url}" target="_blank" rel="noopener" data-act="start">Kerjakan ↗</a>`;
+    // Pembahasan hanya terbuka setelah soal dikerjakan dan jawabannya dinilai salah.
+    const sol = s.kind === 'wrong'
+      ? `<a class="sol-on" href="${p.solutionUrl}" target="_blank" rel="noopener">Pembahasan ↗</a>`
+      : `<span class="sol-off" aria-disabled="true" title="Pembahasan terbuka setelah soal dikerjakan dan jawabannya salah">🔒 Pembahasan</span>`;
+    const undo = ' · <button class="link-btn" data-act="unjudge">ubah</button>';
+    if (s.kind === 'ok') status = `<span class="status ok">Benar</span><small>${detail}</small><small>${sol}${undo}</small>`;
+    else if (s.kind === 'wrong') status = `<span class="status tried">Salah</span><small>${detail}</small><small>${sol}${undo}</small>`;
+    else if (s.kind === 'skip') status = `<span class="status todo">Dilewati</span><small>${sol}${undo}</small>`;
+    else if (s.kind === 'answered') { status = `<span class="status check">Cek kunci</span><small>${sol}</small>`; work = judgeForm(p, s); }
+    else if (s.kind === 'started') { status = `<span class="status working">Dikerjakan</span><small>${sol}</small>`; work = answerForm(p, pk, s); }
+    else status = `<a class="mini-btn primary" href="${p.url}" target="_blank" rel="noopener" data-act="start">Kerjakan ↗</a><small>${sol}</small>`;
     const rowClass = { ok: 'solved', wrong: 'wrong', started: 'inprogress', answered: 'inprogress' }[s.kind] || '';
     return `<li class="problem ${rowClass}" data-pid="${esc(p.id)}" data-pack="${pk.no}">
       <span class="p-label">${esc(entry.label)}</span>
@@ -412,8 +415,8 @@
     if (!last) {
       hint.innerHTML = `Isi jumlah soal (1–${MAX_COUNT}), lalu klik <strong>Keluarkan soal baru</strong>.`;
     } else if (!ready) {
-      hint.innerHTML = `<strong>${sc.done} dari ${sc.total} soal selesai.</strong> Tombol aktif setelah semua soal selesai dikerjakan
-        (dijawab lalu ditandai Benar/Salah, atau dilewati).`;
+      hint.innerHTML = `<strong>${sc.done} dari ${sc.count} soal selesai.</strong> Tombol aktif setelah semua soal selesai dikerjakan
+        (dijawab lalu ditandai Benar/Salah, atau dilewati). Soal bonus tidak wajib.`;
     } else {
       const promo = promotionFor(last.no + 1, currentLevel());
       hint.classList.add('ready');
@@ -708,7 +711,7 @@
         break;
       }
       case 'skip':
-        if (!confirm('Lewati soal ini? Pembahasannya akan terbuka, dan soal ini akan muncul lagi di paket berikutnya.')) return;
+        if (!confirm('Lewati soal ini? Soal ini akan muncul lagi di paket berikutnya.')) return;
         saveAtt(n, p.id, { ...a, s: a.s || now, v: 'lewat', vt: now });
         break;
       case 'benar':

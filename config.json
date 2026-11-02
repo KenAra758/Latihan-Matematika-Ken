@@ -13,7 +13,7 @@
     "maxRatingCap": 2700
   },
   "bonus": {
-    "enabled": false,
+    "enabled": true,
     "perPack": 2,
     "above": 300
   },

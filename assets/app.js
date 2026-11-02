@@ -47,7 +47,9 @@
   const sortedPacks = () => Object.values(state.data.packs).filter(Boolean).sort((a, b) => a.no - b.no);
   const lastPack = () => { const ps = sortedPacks(); return ps[ps.length - 1] || null; };
   const attOf = (n, id) => state.data.att[`p${n}`]?.[id] || null;
-  const currentLevel = () => state.data.level || state.config.level;
+  // Batas bawah rating (config.minRating). Level tersimpan yang lebih rendah diganti level awal di config.
+  const belowFloor = (lvl) => !!lvl && lvl.min < (state.config.minRating || 0);
+  const currentLevel = () => (state.data.level && !belowFloor(state.data.level) ? state.data.level : state.config.level);
   const prefs = () => ({ count: clampCount(state.data.prefs?.count ?? state.config.problemsPerPack) });
 
   // ---------- Firebase ----------
@@ -405,7 +407,7 @@
     if (!state.sync.ok) return;
     const last = lastPack();
     const sc = last ? packScore(last) : null;
-    const ready = !last || sc.complete;
+    const ready = !last || sc.complete || belowFloor(last.level);
     const input = $('np-count');
     if (document.activeElement !== input) input.value = state.countDraft ?? prefs().count;
     const btn = $('np-go');
@@ -418,6 +420,12 @@
       hint.innerHTML = `<strong>${sc.done} dari ${sc.count} soal selesai.</strong> Tombol aktif setelah semua soal selesai dikerjakan
         (dijawab lalu ditandai Benar/Salah, atau dilewati). Soal bonus tidak wajib.`;
     } else {
+      if (!sc.complete) {
+        hint.classList.add('ready');
+        hint.innerHTML = `Level sekarang mulai rating <strong>${currentLevel().min}</strong>. Paket ke-${last.no} masih memakai soal lama yang lebih mudah,
+          jadi soal baru boleh langsung dikeluarkan.`;
+        return;
+      }
       const promo = promotionFor(last.no + 1, currentLevel());
       hint.classList.add('ready');
       hint.innerHTML = `🎉 Semua soal paket ke-${last.no} selesai: <strong>${sc.ok}/${sc.count} benar</strong>.
@@ -761,7 +769,7 @@
       return;
     }
     const last = lastPack();
-    if (last && !packScore(last).complete) return;
+    if (last && !packScore(last).complete && !belowFloor(last.level)) return;
     const bonus = !!(state.config.bonus?.enabled && state.config.bonus.perPack);
     const btn = $('np-go');
     btn.disabled = true;
@@ -822,7 +830,7 @@
     input.blur();
     state.sync.pin = pin;
     await syncLoad();
-    if (state.sync.ok) store('syncPin', pin);
+    if (state.sync.ok) { store('syncPin', pin); await applyFloor(); }
     else state.sync.pin = null;
     renderAll();
   });
@@ -833,7 +841,8 @@
     const min = Math.round(Number($('lvl-min').value));
     const max = Math.round(Number($('lvl-max').value));
     const msg = $('settings-msg');
-    if (!(min >= 400 && max > min)) { msg.textContent = 'Rating maksimum harus lebih besar dari minimum.'; return; }
+    const floor = state.config.minRating || 400;
+    if (!(min >= floor && max > min)) { msg.textContent = `Rating minimum paling rendah ${floor}, dan rating maksimum harus lebih besar dari minimum.`; return; }
     const level = { min, max };
     const last = lastPack();
     try {
@@ -874,6 +883,17 @@
     renderAll();
   });
 
+  // Paket terakhir yang levelnya di bawah batas dan belum dikerjakan sama sekali langsung diganti.
+  async function applyFloor() {
+    const last = lastPack();
+    if (!state.sync.ok || !last || !belowFloor(last.level) || packHasAnswers(last.no)) return;
+    try {
+      await savePack(generatePack(last.no, {
+        level: state.config.level, count: last.problems.length, bonus: !!(last.bonus || []).length, regen: (last.regen || 0) + 1,
+      }));
+    } catch (_) { /* dicoba lagi saat halaman dibuka berikutnya */ }
+  }
+
   async function init() {
     try {
       const res = await fetch('config.json', { cache: 'no-store' });
@@ -892,6 +912,7 @@
     state.sync.pin = store('syncPin');
     renderAll();
     await syncLoad();
+    await applyFloor();
     renderAll();
     // Ambil perubahan dari perangkat lain dan perbarui hitungan waktu setiap menit.
     setInterval(async () => {

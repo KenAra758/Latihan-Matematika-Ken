@@ -4,14 +4,14 @@ Website latihan matematika, pasangan dari dashboard OSN Informatika (`latihan-ke
 
 - **Isi jumlah soal** (1–30) di kolom *Jumlah soal* di atas daftar soal. Soal yang tampil persis sejumlah itu. Angka terakhir diingat.
 - **Tombol "Keluarkan soal baru"** selalu terlihat, tetapi baru **aktif setelah semua soal utama selesai dikerjakan**, yaitu sudah ditandai Benar/Salah atau dilewati.
-- Soal diambil dari arsip **AoPS Wiki**: AJHSME, AMC 8, AMC 10, AMC 12, dan AIME (sekitar 4.700 soal). Tingkat kesulitannya tersebar dari batas bawah sampai batas atas level (awal: rating 700–1300).
+- Soal diambil dari arsip **AoPS Wiki**: AJHSME, AMC 8, AMC 10, AMC 12, dan AIME (sekitar 4.700 soal). Tingkat kesulitannya tersebar dari batas bawah sampai batas atas level (awal: rating 1400–2000; batas bawah `minRating` 1400).
 - **2 soal bonus tantangan** tampil di bawah soal utama, dengan rating di atas level sekarang (sampai +300). Bonus **tidak wajib**: tidak dihitung untuk naik level dan tidak menghalangi tombol *Keluarkan soal baru*. Matikan dengan `"bonus": { "enabled": false }` di `config.json`.
 - **Pembahasan terkunci 🔒** dan baru terbuka setelah soal dikerjakan dan jawabannya ditandai **Salah**.
 - **Isi soal tidak disalin.** Aplikasi hanya menyimpan nama lomba, tahun, dan nomor soal, lalu menautkan ke halaman AoPS Wiki. Tautan soal mengarah ke naskah lengkap (tanpa pembahasan).
 - **Rating** adalah perkiraan dari jenis lomba dan nomor soal: AJHSME 500–1460, AMC 8 600–1560, AMC 10 900–2100, AMC 12 1100–2420, AIME 1700–2680.
 - **Alur mengerjakan:** klik *Kerjakan* (waktu mulai tercatat), lalu isi jawaban (A–E, atau 0–999 untuk AIME), buka *Kunci jawaban*, lalu tandai sendiri *Benar*/*Salah*. Jawaban yang diketik tetap tersimpan, jadi orang tua bisa mencocokkannya kapan saja.
 - **Soal yang belum benar muncul lagi** (ditandai "↻ Ulangan") setelah diselingi minimal 1 paket. Maksimal 3 soal ulangan per paket (dan tidak lebih dari sepertiga paket), dan satu soal paling banyak muncul 3 kali.
-- **Naik level otomatis:** jika Ken menjawab benar minimal **75%** soal di **2 paket berturut-turut**, level naik 100 (misalnya 700–1300 menjadi 800–1400).
+- **Naik level otomatis:** jika Ken menjawab benar minimal **75%** soal di **2 paket berturut-turut**, level naik 100 (misalnya 1400–2000 menjadi 1500–2100).
 - Tab **Riwayat**, **Statistik** (ketepatan, waktu per soal, persentase benar per paket, hasil per jenis lomba dan per rating), dan **Sumber belajar**.
 
 ## Cara kerja

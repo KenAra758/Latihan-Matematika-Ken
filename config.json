@@ -1,9 +1,10 @@
 {
   "displayName": "Ken",
   "problemsPerPack": 8,
+  "minRating": 1400,
   "level": {
-    "min": 700,
-    "max": 1300
+    "min": 1400,
+    "max": 2000
   },
   "autoPromote": {
     "enabled": true,

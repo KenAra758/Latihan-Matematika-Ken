@@ -1,7 +1,6 @@
 {
   "displayName": "Ken",
   "problemsPerPack": 8,
-  "countOptions": [5, 8, 10, 12, 15, 20, 25],
   "level": {
     "min": 700,
     "max": 1300
@@ -14,7 +13,7 @@
     "maxRatingCap": 2700
   },
   "bonus": {
-    "enabled": true,
+    "enabled": false,
     "perPack": 2,
     "above": 300
   },

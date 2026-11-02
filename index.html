@@ -53,6 +53,16 @@
         </div>
       </div>
 
+      <form id="newpack-form" class="np-bar" hidden>
+        <div class="np-row">
+          <label for="np-count">Jumlah soal</label>
+          <input type="number" id="np-count" min="1" max="30" step="1" inputmode="numeric" required>
+          <span class="muted small">maks. 30</span>
+          <button type="submit" class="mini-btn primary np-go" id="np-go">Keluarkan soal baru</button>
+        </div>
+        <p class="np-hint" id="np-hint" aria-live="polite"></p>
+      </form>
+
       <details class="howto">
         <summary>Cara mengerjakan</summary>
         <ol>
@@ -60,7 +70,7 @@
           <li>Kerjakan di kertas. Isi jawaban di sini: pilih A–E untuk AMC/AJHSME, atau ketik bilangan 0–999 untuk AIME. Klik <strong>Simpan jawaban</strong>.</li>
           <li>Buka <strong>Kunci jawaban</strong>, lalu tandai jawabanmu <strong>Benar</strong> atau <strong>Salah</strong> dengan jujur.</li>
           <li>Baca <strong>Pembahasan</strong> untuk soal yang salah. Soal yang belum benar akan muncul lagi di paket berikutnya.</li>
-          <li>Setelah semua soal selesai dinilai, pilih jumlah soal lalu klik <strong>Keluarkan soal baru</strong>. Soal bonus boleh dilewati.</li>
+          <li>Setelah semua soal selesai, isi jumlah soal (maks. 30) lalu klik <strong>Keluarkan soal baru</strong>.</li>
         </ol>
       </details>
 
@@ -75,8 +85,6 @@
         </div>
         <ol class="problems" id="bonus-list"></ol>
       </section>
-
-      <div class="newpack" id="newpack" hidden></div>
 
       <div class="levelup" id="levelup" hidden></div>
 

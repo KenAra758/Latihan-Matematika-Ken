@@ -48,10 +48,7 @@
   const lastPack = () => { const ps = sortedPacks(); return ps[ps.length - 1] || null; };
   const attOf = (n, id) => state.data.att[`p${n}`]?.[id] || null;
   const currentLevel = () => state.data.level || state.config.level;
-  const prefs = () => ({
-    count: clampCount(state.data.prefs?.count ?? state.config.problemsPerPack),
-    bonus: state.data.prefs?.bonus ?? !!state.config.bonus?.enabled,
-  });
+  const prefs = () => ({ count: clampCount(state.data.prefs?.count ?? state.config.problemsPerPack) });
 
   // ---------- Firebase ----------
   const mathBase = () => `${state.sync.url.replace(/\/$/, '')}/k/${encodeURIComponent(state.sync.pin)}/math`;
@@ -145,14 +142,17 @@
     return { ...base, kind: 'started' };
   }
 
+  // count/ok/pct dihitung dari soal utama; "selesai" berarti SEMUA soal yang tampil
+  // (termasuk bonus dari paket lama, jika ada) sudah dinilai atau dilewati.
   function packScore(pk) {
-    const sc = { count: pk.problems.length, ok: 0, done: 0, finishedAt: 0 };
-    pk.problems.forEach((p) => {
+    const all = [...pk.problems, ...(pk.bonus || [])];
+    const sc = { count: pk.problems.length, total: all.length, ok: 0, done: 0, finishedAt: 0 };
+    pk.problems.forEach((p) => { if (statusOf(p.id, pk).kind === 'ok') sc.ok++; });
+    all.forEach((p) => {
       const s = statusOf(p.id, pk);
-      if (s.kind === 'ok') sc.ok++;
       if (DONE.includes(s.kind)) { sc.done++; sc.finishedAt = Math.max(sc.finishedAt, s.att.vt || 0); }
     });
-    sc.complete = sc.count > 0 && sc.done === sc.count;
+    sc.complete = sc.total > 0 && sc.done === sc.total;
     sc.pct = sc.count ? Math.round((sc.ok / sc.count) * 100) : 0;
     return sc;
   }
@@ -394,43 +394,32 @@
     </li>`;
   }
 
-  // Kotak "Keluarkan soal baru": muncul saat belum ada paket, atau paket terakhir sudah selesai semua.
+  // Baris "Jumlah soal + Keluarkan soal baru" di atas daftar soal. Selalu tampil;
+  // tombol baru aktif setelah semua soal yang tampil selesai dikerjakan.
   function renderNewPack() {
-    const el = $('newpack');
+    const form = $('newpack-form');
+    form.hidden = !state.sync.ok;
+    if (!state.sync.ok) return;
     const last = lastPack();
-    if (!state.sync.ok) { el.hidden = true; return; }
-    if (el.contains(document.activeElement)) return; // jangan ganggu saat sedang memilih
-    el.hidden = false;
-    if (last && !packScore(last).complete) {
-      const sc = packScore(last);
-      const left = sc.count - sc.done;
-      el.className = 'newpack locked-pack';
-      el.innerHTML = `<p><strong>Paket ke-${last.no}: ${sc.done} dari ${sc.count} soal selesai.</strong>
-        Selesaikan ${left} soal lagi (jawab lalu tandai Benar/Salah, atau lewati) untuk membuka soal baru.</p>`;
-      return;
+    const sc = last ? packScore(last) : null;
+    const ready = !last || sc.complete;
+    const input = $('np-count');
+    if (document.activeElement !== input) input.value = state.countDraft ?? prefs().count;
+    const btn = $('np-go');
+    if (btn.textContent !== 'Menyiapkan…') btn.disabled = !ready;
+    const hint = $('np-hint');
+    hint.className = 'np-hint';
+    if (!last) {
+      hint.innerHTML = `Isi jumlah soal (1–${MAX_COUNT}), lalu klik <strong>Keluarkan soal baru</strong>.`;
+    } else if (!ready) {
+      hint.innerHTML = `<strong>${sc.done} dari ${sc.total} soal selesai.</strong> Tombol aktif setelah semua soal selesai dikerjakan
+        (dijawab lalu ditandai Benar/Salah, atau dilewati).`;
+    } else {
+      const promo = promotionFor(last.no + 1, currentLevel());
+      hint.classList.add('ready');
+      hint.innerHTML = `🎉 Semua soal paket ke-${last.no} selesai: <strong>${sc.ok}/${sc.count} benar</strong>.
+        ${promo ? `<span class="np-promo">Naik level! Soal berikutnya memakai rating ${promo.to.min}–${promo.to.max}.</span>` : 'Silakan keluarkan soal baru.'}`;
     }
-    const pf = prefs();
-    const opts = state.config.countOptions || [5, 8, 10, 12, 15, 20, 25];
-    const isPreset = opts.includes(pf.count);
-    const promo = last ? promotionFor(last.no + 1, currentLevel()) : null;
-    const lvl = promo ? promo.to : currentLevel();
-    el.className = 'newpack';
-    el.innerHTML = `
-      ${last ? `<p class="np-title">🎉 Semua soal paket ke-${last.no} sudah selesai: <strong>${packScore(last).ok}/${packScore(last).count} benar</strong>.</p>` : '<p class="np-title">Siap mulai? Pilih jumlah soal untuk paket pertama.</p>'}
-      ${promo ? `<p class="np-promo">Naik level! Paket berikutnya memakai rating <strong>${promo.to.min}–${promo.to.max}</strong>.</p>` : ''}
-      <form id="newpack-form" class="np-form">
-        <fieldset class="np-counts">
-          <legend>Jumlah soal</legend>
-          ${opts.map((c) => `<label class="np-count"><input type="radio" name="np-count" value="${c}" ${pf.count === c ? 'checked' : ''}><span>${c}</span></label>`).join('')}
-          <label class="np-count np-custom"><input type="radio" name="np-count" value="custom" ${isPreset ? '' : 'checked'}><span>Lainnya</span>
-            <input type="number" id="np-custom" min="1" max="${MAX_COUNT}" value="${isPreset ? '' : pf.count}" placeholder="1–${MAX_COUNT}" aria-label="Jumlah soal lainnya"></label>
-        </fieldset>
-        ${state.config.bonus?.perPack ? `<label class="switch"><input type="checkbox" id="np-bonus" ${pf.bonus ? 'checked' : ''}> Tambah ${state.config.bonus.perPack} soal bonus tantangan</label>` : ''}
-        <div class="np-actions">
-          <button type="submit" class="mini-btn primary np-go">Keluarkan soal baru</button>
-          <span class="muted small">Level ${lvl.min}–${lvl.max}</span>
-        </div>
-      </form>`;
   }
 
   function renderPack() {
@@ -440,7 +429,7 @@
     if (!packs.length) {
       $('pack-title').textContent = 'Belum ada paket soal';
       $('pack-info').textContent = state.sync.ok
-        ? 'Pilih jumlah soal di bawah, lalu klik "Keluarkan soal baru".'
+        ? 'Isi jumlah soal di bawah ini, lalu klik "Keluarkan soal baru".'
         : 'Sambungkan perangkat dengan PIN keluarga untuk membuka paket soal.';
       list.innerHTML = '<li class="empty">Soal akan muncul di sini.</li>';
       $('pack-score').textContent = '0/0';
@@ -748,39 +737,43 @@
   });
   document.addEventListener('input', (e) => {
     if (e.target.matches?.('[data-aime]')) state.draft[e.target.dataset.aime] = e.target.value;
-    // Mengetik jumlah lain otomatis memilih "Lainnya".
-    if (e.target.id === 'np-custom') { const r = document.querySelector('input[name="np-count"][value="custom"]'); if (r) r.checked = true; }
+    if (e.target.id === 'np-count') {
+      state.countDraft = e.target.value;
+      const n = Number(e.target.value);
+      if (n > MAX_COUNT) { $('np-hint').className = 'np-hint warn'; $('np-hint').textContent = `Maksimal ${MAX_COUNT} soal per tampilan.`; }
+      else renderNewPack();
+    }
   });
 
   // ---------- Paket baru ----------
-  function chosenCount() {
-    const r = document.querySelector('input[name="np-count"]:checked');
-    if (!r) return null;
-    const v = r.value === 'custom' ? $('np-custom').value : r.value;
-    const n = Math.round(Number(v));
-    return n >= 1 && n <= MAX_COUNT ? n : null;
-  }
-
   document.addEventListener('submit', async (e) => {
     if (e.target.id !== 'newpack-form') return;
     e.preventDefault();
-    const count = chosenCount();
-    if (!count) { $('np-custom').focus(); return; }
+    const input = $('np-count');
+    const count = Math.round(Number(input.value));
+    if (!(count >= 1 && count <= MAX_COUNT)) {
+      $('np-hint').className = 'np-hint warn';
+      $('np-hint').textContent = `Jumlah soal harus antara 1 dan ${MAX_COUNT}.`;
+      input.focus();
+      return;
+    }
     const last = lastPack();
     if (last && !packScore(last).complete) return;
-    const bonus = !!$('np-bonus')?.checked;
-    const btn = e.target.querySelector('.np-go');
+    const bonus = !!(state.config.bonus?.enabled && state.config.bonus.perPack);
+    const btn = $('np-go');
     btn.disabled = true;
     btn.textContent = 'Menyiapkan…';
     try {
       const pack = generatePack(last ? last.no + 1 : 1, { count, bonus });
-      state.data.prefs = { count, bonus };
+      state.data.prefs = { count };
+      state.countDraft = null;
       await savePack(pack);
       await fbWrite('prefs', state.data.prefs);
       state.viewPack = pack.no;
     } catch (_) {
       showBanner('Paket baru belum bisa disimpan ke database. Periksa koneksi atau aturan Firebase untuk jalur /k/<PIN>/math.');
     }
+    btn.textContent = 'Keluarkan soal baru';
     document.activeElement?.blur();
     renderAll();
     $('panel-paket').scrollIntoView({ behavior: 'smooth', block: 'start' });

@@ -2,10 +2,10 @@
 
 Website latihan matematika, pasangan dari dashboard OSN Informatika (`latihan-ken`). Bedanya: di sini **tidak ada jadwal mingguan**. Ken mengerjakan satu paket sampai selesai, lalu mengeluarkan paket baru sendiri.
 
-- **Pilih jumlah soal** setiap kali mengeluarkan paket: 5, 8, 10, 12, 15, 20, 25, atau angka lain (1–30). Pilihan terakhir diingat.
-- **Tombol "Keluarkan soal baru"** baru muncul setelah **semua soal paket sekarang selesai**, yaitu sudah ditandai Benar/Salah atau dilewati. Soal bonus tidak wajib diselesaikan.
+- **Isi jumlah soal** (1–30) di kolom *Jumlah soal* di atas daftar soal. Soal yang tampil persis sejumlah itu. Angka terakhir diingat.
+- **Tombol "Keluarkan soal baru"** selalu terlihat, tetapi baru **aktif setelah semua soal yang tampil selesai dikerjakan**, yaitu sudah ditandai Benar/Salah atau dilewati.
 - Soal diambil dari arsip **AoPS Wiki**: AJHSME, AMC 8, AMC 10, AMC 12, dan AIME (sekitar 4.700 soal). Tingkat kesulitannya tersebar dari batas bawah sampai batas atas level (awal: rating 700–1300).
-- **Bonus tantangan (opsional):** 2 soal sedikit di atas level (sampai +300). Bisa dicentang atau tidak setiap membuat paket baru.
+- **Soal bonus dimatikan** (`"bonus": { "enabled": false }` di `config.json`), jadi tidak ada soal tambahan di luar jumlah yang diisi.
 - **Isi soal tidak disalin.** Aplikasi hanya menyimpan nama lomba, tahun, dan nomor soal, lalu menautkan ke halaman AoPS Wiki. Tautan soal mengarah ke naskah lengkap (tanpa pembahasan).
 - **Rating** adalah perkiraan dari jenis lomba dan nomor soal: AJHSME 500–1460, AMC 8 600–1560, AMC 10 900–2100, AMC 12 1100–2420, AIME 1700–2680.
 - **Alur mengerjakan:** klik *Kerjakan* (waktu mulai tercatat), lalu isi jawaban (A–E, atau 0–999 untuk AIME), buka *Kunci jawaban*, lalu tandai sendiri *Benar*/*Salah*. Jawaban yang diketik tetap tersimpan, jadi orang tua bisa mencocokkannya kapan saja.
@@ -49,7 +49,7 @@ Artinya aturan (rules) Firebase hanya mengizinkan jalur tertentu. Buka **Firebas
 |---|---|
 | Mengubah level secara manual | Buka **Pengaturan level (untuk orang tua)** di bawah daftar soal. Jika soal paket sekarang belum ada yang dikerjakan, soalnya langsung diganti. Jika sudah, level baru berlaku mulai paket berikutnya. |
 | Salah memilih jumlah soal | **Pengaturan level → Batalkan paket sekarang & pilih ulang jumlah soal** (hanya bisa jika belum ada soal yang dikerjakan). |
-| Mengubah pilihan jumlah soal | Ubah `countOptions` pada `config.json`. Jumlah awal ada di `problemsPerPack`. |
+| Mengubah jumlah soal awal | Ubah `problemsPerPack` pada `config.json` (dipakai sebelum ada angka yang diisi). |
 | Mengubah syarat naik level | Ubah `minPercent`, `consecutivePacks`, atau `step` di bagian `autoPromote` pada `config.json`. |
 | Mematikan salah satu jenis lomba | Ubah menjadi `false` di bagian `contests` pada `config.json` (misalnya `"AMC12": false`). |
 | Menambah naskah tahun terbaru | Naikkan angka di `lastYear` pada `config.json` setelah naskahnya ada di AoPS Wiki (misalnya `"AMC10": 2026` setelah AMC 10 bulan November). |

@@ -10,9 +10,9 @@
     viewPack: null,
     draft: {},
     // Semua data latihan disimpan di Firebase:
-    // /k/<PIN>/math/{level, prefs, packs/p<N>, att/p<N>/<idSoal>}
+    // /k/<PIN>/math/{level, prefs, packs/p<N>, att/p<N>/<idSoal>, emc/<idPaket>}
     sync: { url: null, pin: null, ok: false, error: null },
-    data: { level: null, prefs: null, packs: {}, att: {} },
+    data: { level: null, prefs: null, packs: {}, att: {}, emc: {} },
   };
 
   const $ = (id) => document.getElementById(id);
@@ -98,7 +98,7 @@
         raw.packs = mig.packs;
         raw.att = mig.att;
       }
-      const next = { level: raw.level || null, prefs: raw.prefs || null, packs: raw.packs || {}, att: raw.att || {} };
+      const next = { level: raw.level || null, prefs: raw.prefs || null, packs: raw.packs || {}, att: raw.att || {}, emc: raw.emc || {} };
       const changed = !sy.ok || JSON.stringify(next) !== JSON.stringify(state.data);
       state.data = next;
       sy.ok = true;
@@ -674,6 +674,7 @@
     renderHistory();
     renderStats();
     renderSettings();
+    window.EmcFinal?.render();
   }
 
   // ---------- Aksi pada soal ----------
@@ -817,7 +818,7 @@
       store('syncPin', null);
       state.sync.pin = null;
       state.sync.ok = false;
-      state.data = { level: null, prefs: null, packs: {}, att: {} };
+      state.data = { level: null, prefs: null, packs: {}, att: {}, emc: {} };
       renderAll();
     }
   });
@@ -921,6 +922,9 @@
       renderAll();
     }, 60000);
   }
+
+  // Dipakai tab EMC Final (assets/emc.js): data dan penyimpanan Firebase yang sama.
+  window.MathApp = { sync: () => state.sync, data: () => state.data, write: fbWrite, renderAll };
 
   init();
 })();

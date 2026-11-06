@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
-  <link rel="stylesheet" href="assets/style.css?v=emc1">
+  <link rel="stylesheet" href="assets/style.css?v=emc2">
 </head>
 <body>
   <div class="wrap">
@@ -23,6 +23,7 @@
     <nav class="tabs" role="tablist" aria-label="Bagian">
       <button role="tab" id="tab-paket" aria-selected="true" data-tab="paket">Paket soal</button>
       <button role="tab" id="tab-emc" aria-selected="false" data-tab="emc">EMC Final</button>
+      <button role="tab" id="tab-emc2" aria-selected="false" data-tab="emc2" disabled>🔒 Soal Final EMC Lanjutan</button>
       <button role="tab" id="tab-riwayat" aria-selected="false" data-tab="riwayat">Riwayat</button>
       <button role="tab" id="tab-statistik" aria-selected="false" data-tab="statistik">Statistik</button>
       <button role="tab" id="tab-sumber" aria-selected="false" data-tab="sumber">Sumber belajar</button>
@@ -108,6 +109,12 @@
       <p class="muted small" id="emc-msg" aria-live="polite"></p>
     </section>
 
+    <!-- SOAL FINAL EMC LANJUTAN (terbuka setelah EMC Final selesai) -->
+    <section class="panel" id="panel-emc2" role="tabpanel" aria-labelledby="tab-emc2" hidden>
+      <div id="emc2-body"></div>
+      <p class="muted small" id="emc2-msg" aria-live="polite"></p>
+    </section>
+
     <!-- RIWAYAT -->
     <section class="panel" id="panel-riwayat" role="tabpanel" aria-labelledby="tab-riwayat" hidden>
       <div class="table-scroll">
@@ -151,8 +158,8 @@
     </footer>
   </div>
 
-  <script src="assets/bank.js?v=emc1"></script>
-  <script src="assets/app.js?v=emc1"></script>
-  <script src="assets/emc.js?v=emc1"></script>
+  <script src="assets/bank.js?v=emc2"></script>
+  <script src="assets/app.js?v=emc2"></script>
+  <script src="assets/emc.js?v=emc2"></script>
 </body>
 </html>

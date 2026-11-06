@@ -13,6 +13,7 @@ Website latihan matematika, pasangan dari dashboard OSN Informatika (`latihan-ke
 - **Soal yang belum benar muncul lagi** (ditandai "↻ Ulangan") setelah diselingi minimal 1 paket. Maksimal 3 soal ulangan per paket (dan tidak lebih dari sepertiga paket), dan satu soal paling banyak muncul 3 kali.
 - **Naik level otomatis:** jika Ken menjawab benar minimal **75%** soal di **2 paket berturut-turut**, level naik 100 (misalnya 1400–2000 menjadi 1500–2100).
 - Tab **EMC Final**: *Paket Latihan Final EMC 2026* (40 soal: 30 pilihan ganda + 10 isian, 120 menit) yang dikerjakan langsung di website. Ken memilih A–D atau mengetik jawaban isian; jawaban tersimpan otomatis. Setelah klik *Selesai & lihat nilai*, langsung tampil nilai, benar per materi, kunci jawaban, dan pembahasan. *Kerjakan ulang* menyimpan nilai lama di riwayat percobaan. Soalnya ada di `assets/emc.js`.
+- Tab **Soal Final EMC Lanjutan**: 30 soal tambahan (22 pilihan ganda + 8 isian, 90 menit) setara soal final 2022 dan 2024. Tab ini terkunci 🔒 sampai *EMC Final* selesai dikerjakan minimal sekali, dan tetap terbuka walaupun EMC Final dikerjakan ulang.
 - Tab **Riwayat**, **Statistik** (ketepatan, waktu per soal, persentase benar per paket, hasil per jenis lomba dan per rating), dan **Sumber belajar**.
 
 ## Cara kerja

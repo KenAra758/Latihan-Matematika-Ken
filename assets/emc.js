@@ -1,4 +1,4 @@
-// Tab "EMC Final": paket latihan final EMC yang bisa dikerjakan langsung di website.
+// Tab "EMC Final" dan "Soal Final EMC Lanjutan": paket latihan final EMC yang dikerjakan langsung di website.
 // Jawaban disimpan di Firebase yang sama: /k/<PIN>/math/emc/<idPaket>
 //   { ans: { "<no>": "A".."D" | "isian" }, startedAt, submittedAt, score, history: [{ at, score, took }] }
 (function () {
@@ -6,6 +6,8 @@
 
   const SETS = [{
     id: 'final2026',
+    tab: 'emc',
+    tabLabel: 'EMC Final',
     title: 'Paket Latihan Final EMC 2026',
     subtitle: '40 soal (30 pilihan ganda + 10 isian) mengikuti pola soal final 2019–2025 · tanpa kalkulator',
     minutes: 120,
@@ -51,56 +53,116 @@
       { n: 39, topic: 'Digit satuan, fungsional, pola, fungsi kuadrat', q: 'Suku berikutnya dari barisan 1, 2, 5, 11, 21, 36, … adalah ….', key: '57', sol: 'Selisih: 1, 3, 6, 10, 15 (bilangan segitiga). Selisih berikutnya 21, maka 36 + 21 = <b>57</b>.' },
       { n: 40, topic: 'Digit satuan, fungsional, pola, fungsi kuadrat', q: 'Garis y = 2x + k menyinggung parabola y = x<sup>2</sup> + 4x + 5. Nilai k adalah ….', opts: ['4', '2', '3', '5'], key: 'A', sol: 'x<sup>2</sup> + 4x + 5 = 2x + k → x<sup>2</sup> + 2x + (5 − k) = 0. Menyinggung jika D = 0: 4 − 4(5 − k) = 0, k = <b>4</b>.' },
     ],
+  }, {
+    id: 'lanjutan2026',
+    tab: 'emc2',
+    tabLabel: 'Soal Final EMC Lanjutan',
+    // Terbuka setelah paket ini selesai dikerjakan minimal sekali.
+    after: 'final2026',
+    title: 'Soal Final EMC Lanjutan',
+    subtitle: '30 soal (22 pilihan ganda + 8 isian) setara soal final 2022 dan 2024 · tanpa kalkulator',
+    note: 'Jangan khawatir jika awalnya hanya bisa 50–60%. Targetnya adalah memahami polanya lewat pembahasan.',
+    minutes: 90,
+    problems: [
+      { n: 1, topic: 'Aljabar', q: 'Diketahui a + b + c = 6, ab + bc + ca = 11, dan abc = 6. Nilai a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> adalah ….', opts: ['42', '36', '54', '216'], key: 'B', sol: 'Gunakan a<sup>3</sup> + b<sup>3</sup> + c<sup>3</sup> = (a+b+c)<sup>3</sup> − 3(a+b+c)(ab+bc+ca) + 3abc = 216 − 198 + 18 = <b>36</b>. (Cek: a, b, c = 1, 2, 3.)' },
+      { n: 2, topic: 'Aljabar', q: 'Bilangan positif a, b, c memenuhi a(a + b + c) = 18, b(a + b + c) = 12, dan c(a + b + c) = 6. Nilai abc adalah ….', opts: ['8', '12', '36', '6'], key: 'D', sol: 'Jumlahkan ketiganya: (a + b + c)<sup>2</sup> = 36, jadi a + b + c = 6. Maka a = 3, b = 2, c = 1, sehingga abc = <b>6</b>.' },
+      { n: 3, topic: 'Aljabar', q: 'Diketahui A = √(12 + √(12 + √(12 + …))) dan B = √(12√(12√(12…))). Nilai B − A adalah ….', opts: ['8', '4', '6', '12'], key: 'A', sol: 'A<sup>2</sup> = 12 + A memberi A = 4. B<sup>2</sup> = 12B memberi B = 12. B − A = <b>8</b>.' },
+      { n: 4, topic: 'Aljabar', q: 'Jika x<sup>1/4</sup> + x<sup>−1/4</sup> = √5, maka nilai x<sup>3/2</sup> + x<sup>−3/2</sup> adalah ….', opts: ['21', '24', '18', '27'], key: 'C', sol: 'Kuadratkan: x<sup>1/2</sup> + x<sup>−1/2</sup> = 5 − 2 = 3. Misal u = 3, maka x<sup>3/2</sup> + x<sup>−3/2</sup> = u<sup>3</sup> − 3u = 27 − 9 = <b>18</b>.' },
+      { n: 5, topic: 'Aljabar', q: 'Nilai dari 1/(√1 + √2) + 1/(√2 + √3) + 1/(√3 + √4) + … + 1/(√99 + √100) adalah ….', key: '9', sol: 'Rasionalkan tiap suku: 1/(√k + √(k+1)) = √(k+1) − √k. Deretnya teleskopik: √100 − √1 = <b>9</b>.' },
+      { n: 6, topic: 'Aljabar', q: 'Suku banyak P(x) jika dibagi (x − 1) bersisa 5 dan jika dibagi (x − 2) bersisa 7. Jika sisa pembagian P(x) oleh (x − 1)(x − 2) adalah ax + b, nilai a × b adalah ….', opts: ['5', '10', '6', '12'], key: 'C', sol: 'Teorema sisa: a + b = P(1) = 5 dan 2a + b = P(2) = 7. Jadi a = 2, b = 3, a × b = <b>6</b>.' },
+      { n: 7, topic: 'Aljabar', q: 'Akar-akar persamaan x<sup>2</sup> − 5x + 3 = 0 adalah p dan q. Nilai p/q + q/p adalah ….', opts: ['19/3', '25/3', '17/3', '22/3'], key: 'A', sol: 'p/q + q/p = (p<sup>2</sup> + q<sup>2</sup>)/pq = [(p + q)<sup>2</sup> − 2pq]/pq = (25 − 6)/3 = <b>19/3</b>.' },
+      { n: 8, topic: 'Teori bilangan', q: 'Banyak pasangan bilangan bulat positif (x, y) yang memenuhi 1/x + 1/y = 1/6 adalah ….', key: '9', sol: 'Kalikan 6xy: 6y + 6x = xy, sehingga (x − 6)(y − 6) = 36. Banyak faktor positif 36 = 9, jadi ada <b>9</b> pasangan.' },
+      { n: 9, topic: 'Teori bilangan', q: 'Jumlah semua bilangan bulat positif n sehingga (n + 24)/(n + 2) merupakan bilangan bulat adalah ….', opts: ['9', '20', '31', '29'], key: 'D', sol: '(n + 24)/(n + 2) = 1 + 22/(n + 2), jadi n + 2 membagi 22. Dengan n ≥ 1: n + 2 = 11 atau 22, n = 9 atau 20. Jumlah <b>29</b>.' },
+      { n: 10, topic: 'Teori bilangan', q: 'Dua digit terakhir dari 7<sup>2026</sup> adalah ….', opts: ['07', '49', '43', '01'], key: 'B', sol: '7<sup>4</sup> = 2401 ≡ 01 (mod 100). 2026 = 4 × 506 + 2, jadi 7<sup>2026</sup> ≡ 7<sup>2</sup> = <b>49</b>.' },
+      { n: 11, topic: 'Teori bilangan', q: 'Banyak faktor positif dari 10! yang merupakan bilangan kuadrat sempurna adalah ….', opts: ['24', '36', '270', '30'], key: 'D', sol: '10! = 2<sup>8</sup> × 3<sup>4</sup> × 5<sup>2</sup> × 7. Faktor kuadrat: pangkat 2 ∈ {0,2,4,6,8} (5), pangkat 3 ∈ {0,2,4} (3), pangkat 5 ∈ {0,2} (2), pangkat 7 = 0. Total 5 × 3 × 2 = <b>30</b>.' },
+      { n: 12, topic: 'Teori bilangan', q: 'Bilangan bulat terkecil N &gt; 1 yang bersisa 1 jika dibagi 2, 3, 4, 5, maupun 6, dan habis dibagi 7, adalah ….', opts: ['121', '301', '241', '421'], key: 'B', sol: 'N − 1 habis dibagi KPK(2, …, 6) = 60, jadi N = 61, 121, 181, 241, 301, … Yang pertama habis dibagi 7: <b>301</b>.' },
+      { n: 13, topic: 'Teori bilangan', q: 'Jumlah semua bilangan asli ≤ 200 yang habis dibagi 3 atau 4, tetapi tidak habis dibagi 6, adalah ….', key: '6735', sol: 'Kelipatan 3 bukan 6 = kelipatan 3 ganjil: 3 + 9 + … + 195 = 33 × 99 = 3267. Kelipatan 4 bukan 6 = kelipatan 4 bukan 12: 5100 − 1632 = 3468. Total <b>6735</b>.' },
+      { n: 14, topic: 'Teori bilangan', q: 'Banyak pasangan bilangan bulat positif (x, y) yang memenuhi x<sup>2</sup> − y<sup>2</sup> = 2025 adalah ….', key: '7', sol: '(x − y)(x + y) = 2025 = 3<sup>4</sup> × 5<sup>2</sup>, yang punya 15 faktor (semua ganjil, jadi x dan y pasti bulat). Pasangan dengan x − y &lt; x + y: (15 − 1)/2 = <b>7</b> (pasangan 45 × 45 memberi y = 0).' },
+      { n: 15, topic: 'Geometri bidang', q: 'Segitiga memiliki panjang sisi 13, 14, dan 15. Jari-jari lingkaran luar segitiga tersebut adalah ….', opts: ['65/8', '7', '8', '33/4'], key: 'A', sol: 'Luas (Heron, s = 21): √(21·8·7·6) = 84. R = abc/(4L) = 2730/336 = <b>65/8</b>.' },
+      { n: 16, topic: 'Geometri bidang', q: 'Persegi ABCD bersisi 12. E titik tengah AB dan F titik tengah BC. Garis DE dan AF berpotongan di G. Luas segiempat GFCD adalah …. <em class="muted">(dalam bentuk desimal)</em>', key: '79,2', accept: ['79,2', '79.2'], sol: 'Koordinat A(0,0), B(12,0), C(12,12), D(0,12). DE: y = 12 − 2x; AF: y = x/2. G = (4,8; 2,4). Rumus shoelace untuk G, F(12,6), C(12,12), D(0,12) memberi luas <b>79,2</b>. (Fakta menarik: DE ⊥ AF.)' },
+      { n: 17, topic: 'Geometri bidang', q: 'Tiga lingkaran berjari-jari 1 saling bersinggungan luar. Luas daerah yang dibatasi ketiga lingkaran (di antara ketiganya) adalah ….', opts: ['√3 − π/3', '2√3 − π', '√3 − π/2', '√3/2 − π/6'], key: 'C', sol: 'Pusat-pusatnya membentuk segitiga sama sisi bersisi 2, luasnya √3. Tiga juring 60° = setengah lingkaran = π/2. Luas = <b>√3 − π/2</b>.' },
+      { n: 18, topic: 'Geometri bidang', q: 'Dari titik P di luar lingkaran ditarik garis yang memotong lingkaran di A dan B (P–A–B) dengan PA = 4 dan AB = 5, serta garis singgung PT. Panjang PT adalah ….', opts: ['5', '√20', '3√5', '6'], key: 'D', sol: 'Kuasa titik: PT<sup>2</sup> = PA × PB = 4 × 9 = 36, jadi PT = <b>6</b>.' },
+      { n: 19, topic: 'Geometri ruang', q: 'Kubus ABCD.EFGH memiliki rusuk 6. Jarak titik E ke bidang BDG adalah ….', opts: ['4√3', '2√3', '3√3', '6√2'], key: 'A', sol: 'Diagonal ruang EC tegak lurus bidang BDG dan bidang BDG memotongnya di ⅓ dari C. Jarak E = ⅔ × 6√3 = <b>4√3</b>.' },
+      { n: 20, topic: 'Geometri ruang', q: 'Pada kubus ABCD.EFGH, nilai kosinus sudut antara diagonal ruang AG dan BH adalah ….', opts: ['1/2', '1/3', '√3/3', '2/3'], key: 'B', sol: 'Dengan rusuk 1: AG = (1,1,1), BH = (−1,1,1). cos θ = (−1 + 1 + 1)/(√3 × √3) = <b>1/3</b>.' },
+      { n: 21, topic: 'Geometri ruang', q: 'Sebuah bola dimasukkan ke dalam kerucut sehingga menyinggung alas dan selimut kerucut. Kerucut memiliki jari-jari alas 6 dan tinggi 8. Volume bola adalah ….', opts: ['27π', '48π', '36π', '288π'], key: 'C', sol: 'Penampang: segitiga sama kaki alas 12, sisi miring 10. Jari-jari bola = luas/s = 48/16 = 3. Volume = (4/3)π × 27 = <b>36π</b>.' },
+      { n: 22, topic: 'Kombinatorika & peluang', q: 'Banyak bilangan empat digit dengan semua digit berbeda yang habis dibagi 5 adalah ….', opts: ['952', '504', '896', '1008'], key: 'A', sol: 'Berakhiran 0: 9 × 8 × 7 = 504. Berakhiran 5: digit pertama 8 pilihan (bukan 0, bukan 5), lalu 8 × 7, jadi 448. Total <b>952</b>.' },
+      { n: 23, topic: 'Kombinatorika & peluang', q: 'Banyak susunan huruf MATEMATIKA sehingga kedua huruf T tidak berdampingan adalah ….', key: '120960', sol: 'Total: 10!/(3! 2! 2!) = 151.200. T berdampingan (TT satu blok): 9!/(3! 2!) = 30.240. Jawaban 151.200 − 30.240 = <b>120.960</b>.' },
+      { n: 24, topic: 'Kombinatorika & peluang', q: 'Banyak solusi bilangan bulat tak negatif dari a + b + c = 10 dengan a ≤ 5 adalah ….', opts: ['45', '56', '66', '51'], key: 'D', sol: 'Tanpa syarat: C(12, 2) = 66. Kurangi a ≥ 6 (misal a = a\' + 6, a\' + b + c = 4): C(6, 2) = 15. Jawaban <b>51</b>.' },
+      { n: 25, topic: 'Kombinatorika & peluang', q: 'Tiga dadu dilempar. Peluang hasil kali ketiga mata dadu habis dibagi 4 adalah ….', opts: ['1/2', '5/8', '3/4', '7/8'], key: 'B', sol: 'Komplemen: hasil kali ganjil (1/8) atau tepat satu faktor 2 — satu dadu bernilai 2 atau 6 dan dua lainnya ganjil: 3 × (1/3)(1/2)(1/2) = 1/4. Jawaban 1 − 1/8 − 1/4 = <b>5/8</b>.' },
+      { n: 26, topic: 'Kombinatorika & peluang', q: '2% penduduk mengidap suatu penyakit. Tes memberi hasil positif pada 90% pengidap dan pada 5% orang sehat. Jika hasil tes seseorang positif, peluang ia benar-benar sakit adalah ….', opts: ['9/10', '2/7', '18/67', '18/49'], key: 'C', sol: 'P(positif) = 0,02 × 0,9 + 0,98 × 0,05 = 0,018 + 0,049 = 0,067. P(sakit | positif) = 0,018/0,067 = <b>18/67</b>.' },
+      { n: 27, topic: 'Fungsi, barisan, statistik', q: 'Fungsi f memenuhi f(x) + 2f(2026 − x) = 3x untuk semua bilangan real x. Nilai f(1013) adalah ….', key: '1013', sol: 'Ganti x dengan 2026 − x: f(2026 − x) + 2f(x) = 3(2026 − x). Eliminasi f(2026 − x) memberi f(x) = 4052 − 3x. Jadi f(1013) = 4052 − 3039 = <b>1013</b>.' },
+      { n: 28, topic: 'Fungsi, barisan, statistik', q: 'Jumlah 10 suku pertama sebuah deret aritmetika adalah 145 dan jumlah 20 suku pertamanya 490. Jumlah 30 suku pertamanya adalah ….', key: '1035', sol: 'Sifat deret aritmetika: S<sub>10</sub>, S<sub>20</sub> − S<sub>10</sub>, S<sub>30</sub> − S<sub>20</sub> juga barisan aritmetika: 145, 345, 545. S<sub>30</sub> = 490 + 545 = <b>1035</b>.' },
+      { n: 29, topic: 'Fungsi, barisan, statistik', q: 'Parabola y = x<sup>2</sup> − (k + 1)x + k memotong sumbu x di dua titik yang berjarak 5. Jumlah semua nilai k yang mungkin adalah ….', opts: ['2', '−2', '5', '6'], key: 'A', sol: 'x<sup>2</sup> − (k+1)x + k = (x − 1)(x − k), akarnya 1 dan k. |k − 1| = 5, jadi k = 6 atau −4. Jumlah <b>2</b>.' },
+      { n: 30, topic: 'Fungsi, barisan, statistik', q: 'Lima bilangan bulat positif memiliki rata-rata 10, median 11, modus tunggal 13, dan jangkauan 9. Setelah diurutkan dari yang terkecil, bilangan urutan kedua adalah ….', opts: ['7', '9', '8', '10'], key: 'B', sol: 'Modus tunggal 13 dan median 11 berarti dua bilangan terbesar 13 dan 13. Jangkauan 9: terkecil 4. Jumlah 50, jadi urutan ke-2 = 50 − 4 − 11 − 26 = <b>9</b>. Data: 4, 9, 11, 13, 13.' },
+    ],
   }];
 
   const LETTERS = ['A', 'B', 'C', 'D'];
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const set = SETS[0];
-  const ui = { onlyWrong: false };
+  const byId = new Map(SETS.map((s) => [s.id, s]));
+  const ui = {};
   const timers = {};
 
   const app = () => window.MathApp;
-  const rec = () => app()?.data().emc?.[set.id] || {};
+  const rec = (set) => app()?.data().emc?.[set.id] || {};
+  const finishedOnce = (set) => { const r = rec(set); return !!r.submittedAt || !!(r.history || []).length; };
+  const unlocked = (set) => !set.after || finishedOnce(byId.get(set.after));
   // Isian: abaikan spasi dan pemisah ribuan, jadi "1.170" atau "1 170" sama dengan 1170.
+  // Soal berjawaban desimal memakai daftar `accept` dan dicocokkan apa adanya (tanpa spasi).
   const norm = (v) => String(v ?? '').replace(/[\s.,]/g, '').replace(/−/g, '-').toLowerCase();
-  const isRight = (p, v) => (p.opts ? v === p.key : v != null && v !== '' && norm(v) === norm(p.key));
+  const filled = (v) => v != null && v !== '';
+  const isRight = (p, v) => {
+    if (p.opts) return v === p.key;
+    if (!filled(v)) return false;
+    if (p.accept) return p.accept.includes(String(v).replace(/\s/g, ''));
+    return norm(v) === norm(p.key);
+  };
   const answerText = (p, v) => {
-    if (v == null || v === '') return '<span class="muted">kosong</span>';
+    if (!filled(v)) return '<span class="muted">kosong</span>';
     if (!p.opts) return esc(v);
     const i = LETTERS.indexOf(v);
     return `${v}) ${p.opts[i] ?? ''}`;
   };
   const minutes = (ms) => Math.max(1, Math.round(ms / 60000));
+  const countFilled = (set, ans) => set.problems.filter((p) => filled(ans[p.n])).length;
 
-  function local(patch) {
+  function local(set, patch) {
     const d = app().data();
     d.emc = d.emc || {};
-    d.emc[set.id] = { ...rec(), ...patch };
+    d.emc[set.id] = { ...rec(set), ...patch };
   }
 
-  async function write(path, value) {
+  async function write(set, path, value) {
     try {
       await app().write(`emc/${set.id}${path ? `/${path}` : ''}`, value);
-      $('emc-msg').textContent = '';
+      $(`${set.tab}-msg`).textContent = '';
     } catch (_) {
-      $('emc-msg').textContent = 'Jawaban belum tersimpan karena koneksi bermasalah. Coba lagi sebentar lagi.';
+      $(`${set.tab}-msg`).textContent = 'Jawaban belum tersimpan karena koneksi bermasalah. Coba lagi sebentar lagi.';
     }
   }
 
-  async function saveAnswer(n, v) {
-    const r = rec();
+  async function saveAnswer(set, n, v, quiet) {
+    const r = rec(set);
+    if (quiet && ((r.ans || {})[n] ?? '') === (v ?? '')) return;
     const ans = { ...(r.ans || {}) };
-    if (v == null || v === '') delete ans[n]; else ans[n] = v;
+    if (filled(v)) ans[n] = v; else delete ans[n];
     const patch = { ans };
     if (!r.startedAt) patch.startedAt = Date.now();
-    local(patch);
-    render();
-    if (patch.startedAt) await write('startedAt', patch.startedAt);
-    await write(`ans/${n}`, v == null || v === '' ? null : v);
+    local(set, patch);
+    if (quiet) {
+      // Isian: jangan menggambar ulang kotak yang sedang diketik.
+      $(`${set.tab}-q${n}`)?.classList.toggle('filled', filled(v));
+      const head = $(`panel-${set.tab}`).querySelector('.emc-progress b');
+      if (head) head.textContent = `${countFilled(set, ans)}/${set.problems.length}`;
+    } else {
+      render();
+    }
+    if (patch.startedAt) await write(set, 'startedAt', patch.startedAt);
+    await write(set, `ans/${n}`, filled(v) ? v : null);
   }
 
-  function scoreOf(ans) {
+  function scoreOf(set, ans) {
     const byTopic = new Map();
     let ok = 0;
     set.problems.forEach((p) => {
@@ -112,10 +174,10 @@
     return { ok, count: set.problems.length, byTopic };
   }
 
-  function problemHtml(p, r, done) {
+  function problemHtml(set, p, r, done) {
     const v = (r.ans || {})[p.n];
     const right = done && isRight(p, v);
-    const cls = done ? (right ? 'ok' : 'bad') : (v != null && v !== '' ? 'filled' : '');
+    const cls = done ? (right ? 'ok' : 'bad') : (filled(v) ? 'filled' : '');
     let work;
     if (done) {
       work = `<p class="emc-result">${right ? '✓ Benar' : '✗ Salah'} · Jawabanmu: <b>${answerText(p, v)}</b>
@@ -124,38 +186,56 @@
     } else if (p.opts) {
       work = `<div class="emc-opts" role="group" aria-label="Pilihan soal ${p.n}">${p.opts.map((o, i) => {
         const L = LETTERS[i];
-        return `<button type="button" class="emc-opt" data-n="${p.n}" data-v="${L}" aria-pressed="${v === L}"><b>${L})</b> ${o}</button>`;
+        return `<button type="button" class="emc-opt" data-set="${set.id}" data-n="${p.n}" data-v="${L}" aria-pressed="${v === L}"><b>${L})</b> ${o}</button>`;
       }).join('')}</div>`;
     } else {
       work = `<label class="emc-fill">Jawaban:
-        <input type="text" inputmode="numeric" autocomplete="off" data-n="${p.n}" value="${esc(v ?? '')}" placeholder="isi angka">
+        <input type="text" inputmode="${p.accept ? 'decimal' : 'numeric'}" autocomplete="off" data-set="${set.id}" data-n="${p.n}" value="${esc(v ?? '')}" placeholder="isi angka">
       </label>`;
     }
-    return `<li class="emc-q ${cls}" id="emc-q${p.n}">
+    return `<li class="emc-q ${cls}" id="${set.tab}-q${p.n}">
       <p class="emc-text"><span class="emc-no">${p.n}.</span> ${p.q}${p.opts ? '' : ' <em class="muted">(Isian)</em>'}</p>
       ${work}
     </li>`;
   }
 
-  function render() {
-    const panel = $('panel-emc');
-    if (!panel || !app()) return;
+  function renderTabs() {
+    SETS.forEach((set) => {
+      const tab = $(`tab-${set.tab}`);
+      if (!tab) return;
+      const open = unlocked(set);
+      tab.disabled = !open;
+      tab.textContent = `${open ? '' : '🔒 '}${set.tabLabel}`;
+      tab.title = open ? '' : `Terbuka setelah ${byId.get(set.after).title} selesai dikerjakan`;
+      // Tab yang terkunci tidak boleh tetap terbuka (misalnya dari tab terakhir yang diingat).
+      if (!open && app().sync().ok && tab.getAttribute('aria-selected') === 'true') $(`tab-${byId.get(set.after).tab}`)?.click();
+    });
+  }
+
+  function renderSet(set) {
+    const panel = $(`panel-${set.tab}`);
+    if (!panel) return;
     // Jangan menimpa kotak isian yang sedang diketik.
     if (panel.contains(document.activeElement) && document.activeElement.tagName === 'INPUT') return;
-    const body = $('emc-body');
+    const body = $(`${set.tab}-body`);
     if (!app().sync().ok) {
       body.innerHTML = '<p class="emc-note">Masukkan PIN keluarga di bagian atas halaman dulu, supaya jawaban Ken tersimpan.</p>';
       return;
     }
-    const r = rec();
+    if (!unlocked(set)) {
+      body.innerHTML = `<p class="emc-note">🔒 Soal ini terbuka setelah <b>${esc(byId.get(set.after).title)}</b> selesai dikerjakan.</p>`;
+      return;
+    }
+    const st = ui[set.id] || (ui[set.id] = { onlyWrong: false });
+    const r = rec(set);
     const ans = r.ans || {};
     const done = !!r.submittedAt;
-    const answered = set.problems.filter((p) => ans[p.n] != null && ans[p.n] !== '').length;
     const total = set.problems.length;
+    const nextSet = SETS.find((s) => s.after === set.id);
 
     let head;
     if (done) {
-      const sc = scoreOf(ans);
+      const sc = scoreOf(set, ans);
       const nilai = Math.round((sc.ok / sc.count) * 100);
       const took = r.startedAt ? `${minutes(r.submittedAt - r.startedAt)} menit` : '—';
       const topics = [...sc.byTopic.entries()].map(([t, s]) => {
@@ -170,27 +250,30 @@
         </div>
         <figure class="chart-card"><figcaption>Benar per materi</figcaption><ul class="tag-bars emc-topics">${topics}</ul>
           <p class="muted small">Materi dengan banyak jawaban salah perlu diulang sebelum final.</p></figure>
+        ${nextSet ? `<p class="emc-unlock">🔓 <b>${esc(nextSet.title)}</b> sudah terbuka. <button type="button" class="link-btn" data-goto="${nextSet.tab}">Buka sekarang →</button></p>` : ''}
         ${hist ? `<details class="howto"><summary>Percobaan sebelumnya</summary><ul>${hist}</ul></details>` : ''}
         <div class="emc-actions">
-          <button type="button" class="btn-ghost" data-emc="wrong">${ui.onlyWrong ? 'Tampilkan semua soal' : 'Tampilkan soal yang salah saja'}</button>
-          <button type="button" class="btn-ghost" data-emc="retry">Kerjakan ulang</button>
+          <button type="button" class="btn-ghost" data-emc="wrong" data-set="${set.id}">${st.onlyWrong ? 'Tampilkan semua soal' : 'Tampilkan soal yang salah saja'}</button>
+          <button type="button" class="btn-ghost" data-emc="retry" data-set="${set.id}">Kerjakan ulang</button>
         </div>`;
     } else {
       const left = r.startedAt ? set.minutes - Math.floor((Date.now() - r.startedAt) / 60000) : null;
       const time = left == null ? `Waktu ${set.minutes} menit mulai dihitung saat soal pertama dijawab.`
         : left > 0 ? `Sisa waktu sekitar <b>${left} menit</b> dari ${set.minutes} menit.`
           : `<b class="emc-late">Waktu ${set.minutes} menit sudah habis.</b> Selesaikan lalu lihat nilai.`;
-      head = `<p class="emc-progress"><b>${answered}/${total}</b> soal terjawab · ${time}</p>
+      const answered = countFilled(set, ans);
+      head = `${set.note ? `<p class="muted small">${esc(set.note)}</p>` : ''}
+        <p class="emc-progress"><b>${answered}/${total}</b> soal terjawab · ${time}</p>
         <div class="meter" aria-hidden="true"><span style="width:${(answered / total) * 100}%"></span></div>`;
     }
 
     let lastTopic = null;
     const items = set.problems
-      .filter((p) => !(done && ui.onlyWrong && isRight(p, ans[p.n])))
+      .filter((p) => !(done && st.onlyWrong && isRight(p, ans[p.n])))
       .map((p) => {
         const h = p.topic !== lastTopic ? `<li class="emc-topic">${esc(p.topic)}</li>` : '';
         lastTopic = p.topic;
-        return h + problemHtml(p, r, done);
+        return h + problemHtml(set, p, r, done);
       }).join('');
 
     body.innerHTML = `
@@ -201,87 +284,81 @@
       </header>
       <ol class="emc-list">${items || '<li class="emc-note">Semua soal benar. Hebat!</li>'}</ol>
       ${done ? '' : `<div class="emc-actions">
-        <button type="button" class="mini-btn primary emc-submit" data-emc="submit">Selesai &amp; lihat nilai</button>
+        <button type="button" class="mini-btn primary emc-submit" data-emc="submit" data-set="${set.id}">Selesai &amp; lihat nilai</button>
         <span class="muted small">Setelah selesai, nilai, kunci jawaban, dan pembahasan langsung tampil.</span>
       </div>`}`;
   }
 
-  async function submit() {
-    const r = rec();
-    const ans = r.ans || {};
-    const empty = set.problems.filter((p) => ans[p.n] == null || ans[p.n] === '').map((p) => p.n);
+  function render() {
+    if (!app()) return;
+    renderTabs();
+    SETS.forEach(renderSet);
+  }
+
+  async function submit(set) {
+    const ans = rec(set).ans || {};
+    const empty = set.problems.filter((p) => !filled(ans[p.n])).map((p) => p.n);
     const ask = empty.length
       ? `Masih ada ${empty.length} soal kosong (no. ${empty.slice(0, 10).join(', ')}${empty.length > 10 ? ', …' : ''}). Soal kosong dihitung salah. Tetap selesai?`
       : 'Selesai dan lihat nilai? Jawaban tidak bisa diubah lagi.';
     if (!confirm(ask)) return;
     const submittedAt = Date.now();
-    const score = scoreOf(ans).ok;
-    local({ submittedAt, score });
-    ui.onlyWrong = false;
+    const score = scoreOf(set, ans).ok;
+    local(set, { submittedAt, score });
+    ui[set.id] = { onlyWrong: false };
     render();
-    window.scrollTo({ top: $('panel-emc').offsetTop - 12, behavior: 'smooth' });
-    await write('submittedAt', submittedAt);
-    await write('score', score);
+    window.scrollTo({ top: $(`panel-${set.tab}`).offsetTop - 12, behavior: 'smooth' });
+    await write(set, 'submittedAt', submittedAt);
+    await write(set, 'score', score);
   }
 
-  async function retry() {
+  async function retry(set) {
     if (!confirm('Kerjakan ulang paket ini dari awal? Nilai sekarang tetap tercatat di "Percobaan sebelumnya".')) return;
-    const r = rec();
+    const r = rec(set);
     const took = r.startedAt && r.submittedAt ? minutes(r.submittedAt - r.startedAt) : null;
-    const history = [...(r.history || []), { at: r.submittedAt, score: r.score ?? scoreOf(r.ans || {}).ok, ...(took ? { took } : {}) }];
+    const history = [...(r.history || []), { at: r.submittedAt, score: r.score ?? scoreOf(set, r.ans || {}).ok, ...(took ? { took } : {}) }];
     const next = { history };
     app().data().emc[set.id] = next;
-    ui.onlyWrong = false;
+    ui[set.id] = { onlyWrong: false };
     render();
-    await write('', next);
+    await write(set, '', next);
   }
+
+  const setOf = (el) => byId.get(el.dataset.set);
 
   document.addEventListener('click', (e) => {
     const opt = e.target.closest('.emc-opt');
     if (opt) {
+      const set = setOf(opt);
       const n = Number(opt.dataset.n);
-      const cur = (rec().ans || {})[n];
+      const cur = (rec(set).ans || {})[n];
       // Klik pilihan yang sama sekali lagi untuk mengosongkan.
-      saveAnswer(n, cur === opt.dataset.v ? null : opt.dataset.v);
+      saveAnswer(set, n, cur === opt.dataset.v ? null : opt.dataset.v);
       return;
     }
+    const go = e.target.closest('[data-goto]');
+    if (go) { $(`tab-${go.dataset.goto}`)?.click(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     const act = e.target.closest('[data-emc]');
     if (!act) return;
-    if (act.dataset.emc === 'submit') submit();
-    if (act.dataset.emc === 'retry') retry();
-    if (act.dataset.emc === 'wrong') { ui.onlyWrong = !ui.onlyWrong; render(); }
+    const set = setOf(act);
+    if (act.dataset.emc === 'submit') submit(set);
+    if (act.dataset.emc === 'retry') retry(set);
+    if (act.dataset.emc === 'wrong') { ui[set.id].onlyWrong = !ui[set.id].onlyWrong; render(); }
   });
 
   document.addEventListener('input', (e) => {
     const inp = e.target.closest('.emc-fill input');
     if (!inp) return;
-    const n = Number(inp.dataset.n);
-    clearTimeout(timers[n]);
-    timers[n] = setTimeout(() => saveAnswerQuiet(n, inp.value.trim()), 800);
+    const key = `${inp.dataset.set}:${inp.dataset.n}`;
+    clearTimeout(timers[key]);
+    timers[key] = setTimeout(() => saveAnswer(setOf(inp), Number(inp.dataset.n), inp.value.trim(), true), 800);
   });
   document.addEventListener('change', (e) => {
     const inp = e.target.closest('.emc-fill input');
     if (!inp) return;
-    const n = Number(inp.dataset.n);
-    clearTimeout(timers[n]);
-    saveAnswerQuiet(n, inp.value.trim());
+    clearTimeout(timers[`${inp.dataset.set}:${inp.dataset.n}`]);
+    saveAnswer(setOf(inp), Number(inp.dataset.n), inp.value.trim(), true);
   });
-
-  // Simpan isian tanpa menggambar ulang kotak yang sedang diketik.
-  async function saveAnswerQuiet(n, v) {
-    const r = rec();
-    if (((r.ans || {})[n] ?? '') === v) return;
-    const ans = { ...(r.ans || {}) };
-    if (v === '') delete ans[n]; else ans[n] = v;
-    const patch = { ans };
-    if (!r.startedAt) patch.startedAt = Date.now();
-    local(patch);
-    $(`emc-q${n}`)?.classList.toggle('filled', v !== '');
-    const head = document.querySelector('.emc-progress b');
-    if (head) head.textContent = `${set.problems.filter((p) => ans[p.n] != null && ans[p.n] !== '').length}/${set.problems.length}`;
-    if (patch.startedAt) await write('startedAt', patch.startedAt);
-    await write(`ans/${n}`, v === '' ? null : v);
-  }
 
   window.EmcFinal = { render };
   // Data bisa sudah tersinkron sebelum file ini selesai dimuat.
